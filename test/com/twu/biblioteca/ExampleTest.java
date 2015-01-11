@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.*;
@@ -11,15 +12,18 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
+
 public class ExampleTest {
 
 
-    private static final String GOLD_PATH ="/Users/abhinaym/Downloads/TWU_Biblioteca-master/out/textfiles" ;
+    private static final String GOLD_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/out/textfiles";
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private BibliotecaApp testInstance = new BibliotecaApp();
 
-
+    /*@Rule
+    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
+*/
 
     @Before
     public void setUpStreams() {
@@ -33,7 +37,7 @@ public class ExampleTest {
         System.setErr(null);
     }
 
-    @Test
+   /* @Test
     public void checkWelcomeConsoleMessage() {
 
 
@@ -41,7 +45,7 @@ public class ExampleTest {
         assertEquals("Welcome to Bibilioteca!!!", outContent.toString());
 
 
-    }
+    }*/
 
     @Test
     public void checkListOfLibraryBooks() throws IOException {
@@ -52,6 +56,51 @@ public class ExampleTest {
 
     }
 
+  /*  @Test
+    public void checkListOfLibraryBooksWithDetails() throws IOException {
+
+        testInstance.displayListOfLibraryBooksWithDetails();
+
+
+        verifyOutput(outContent.toString().replaceAll(" \\s",",").replaceAll(",{2,}", ","),"bookdetailslist");
+
+
+
+    }
+
+*/
+
+
+    @Test
+    public void checkMainMenuListingOfFilesOption() throws IOException {
+
+
+        testInstance.choosingMainMenuOption(1);
+
+        verifyOutput(outContent.toString(), "booklist");
+
+
+    }
+
+    @Test
+    public void checkMainMenuInvalidOption() throws IOException {
+
+        testInstance.choosingMainMenuOption(10);
+        verifyOutput(outContent.toString(), "invalid");
+
+
+    }
+
+
+    /*@Test
+    public void checkMainMenuQuitOption() throws IOException {
+
+
+        testInstance.choosingMainMenuOption(2);
+        verifyOutput(outContent.toString(), "exit");
+
+    }
+*/
 
     protected void verifyOutput(String actualValue, String fileName) throws IOException {
 
@@ -61,6 +110,8 @@ public class ExampleTest {
 
         String thisFileLine;
         while ((thisFileLine = file.readLine()) != null) {
+
+
             assertThat("in file: " + fileName, actualStream.readLine(), equalTo(thisFileLine));
 
 
@@ -68,4 +119,8 @@ public class ExampleTest {
 
 
     }
+
+
+
+
 }
