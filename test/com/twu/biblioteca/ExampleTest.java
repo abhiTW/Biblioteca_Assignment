@@ -3,7 +3,6 @@ package com.twu.biblioteca;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.*;
@@ -17,6 +16,9 @@ public class ExampleTest {
 
 
     private static final String GOLD_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/out/textfiles";
+    private static final int NO_OF_FILES = 5;
+
+    private static int checkOutArray[] = new int[NO_OF_FILES];
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private BibliotecaApp testInstance = new BibliotecaApp();
@@ -37,7 +39,7 @@ public class ExampleTest {
         System.setErr(null);
     }
 
-   /* @Test
+    @Test
     public void checkWelcomeConsoleMessage() {
 
 
@@ -45,13 +47,13 @@ public class ExampleTest {
         assertEquals("Welcome to Bibilioteca!!!", outContent.toString());
 
 
-    }*/
+    }
 
     @Test
     public void checkListOfLibraryBooks() throws IOException {
 
         testInstance.displayListOfLibraryBooks();
-        verifyOutput(outContent.toString(), "booklist");
+        verifyOutputAfterCheckOutOrReturn(outContent.toString(), "booklist");
 
 
     }
@@ -92,7 +94,7 @@ public class ExampleTest {
     }
 
 
-    /*@Test
+    @Test
     public void checkMainMenuQuitOption() throws IOException {
 
 
@@ -100,16 +102,53 @@ public class ExampleTest {
         verifyOutput(outContent.toString(), "exit");
 
     }
+
+   /*@Test
+    public void checkCheckOutOfBooksIfCheckedOutBookIsUnavailable() throws IOException {
+
+
+        int book_no = 2;
+        testInstance.checkOutOfBooks(book_no);
+        checkOutArray[book_no - 1] = 1;
+        verifyOutputAfterCheckOutOrReturn(outContent.toString(), "booklist"); // Running to display only the list of books names and not details  ...
+
+
+    }*/
+
+    @Test
+    public void checkUnsuccessfulCheckOut() throws IOException
+
+    {
+        testInstance.checkOutOfBooks(10);
+        verifyOutput(outContent.toString(), "failure_checkout");
+
+    }
+
+   /* @Test
+    public void checkReturnOfBooksIfReturnedBookIsAvailable() throws IOException {
+
+
+        int book_no = 3;
+        testInstance.checkOutOfBooks(book_no);
+                                                        // Unable to flush the outContent after calling the checkOutOfBooks
+
+        testInstance.returnOfBooks(book_no);
+        checkOutArray[book_no - 1] = 0;
+
+
+        verifyOutputAfterCheckOutOrReturn(outContent.toString(), "booklist");
+
+    }
 */
 
-    protected void verifyOutput(String actualValue, String fileName) throws IOException {
-
+    private void verifyOutputAfterCheckOutOrReturn(String actualValue, String fileName) throws IOException {
 
         BufferedReader file = new BufferedReader(new FileReader(GOLD_PATH + '/' + fileName));
         BufferedReader actualStream = new BufferedReader(new StringReader(actualValue));
 
         String thisFileLine;
-        while ((thisFileLine = file.readLine()) != null) {
+        int ctr = 0;
+        while ((thisFileLine = file.readLine()) != null && checkOutArray[ctr++] != 1) {
 
 
             assertThat("in file: " + fileName, actualStream.readLine(), equalTo(thisFileLine));
@@ -121,6 +160,24 @@ public class ExampleTest {
     }
 
 
+    protected void verifyOutput(String actualValue, String fileName) throws IOException {
+
+
+        BufferedReader file = new BufferedReader(new FileReader(GOLD_PATH + '/' + fileName));
+        BufferedReader actualStream = new BufferedReader(new StringReader(actualValue));
+
+        String thisFileLine;
+        assertEquals(0, checkOutArray[1]);
+        while ((thisFileLine = file.readLine()) != null) {
+
+
+            assertThat("in file: " + fileName, actualStream.readLine(), equalTo(thisFileLine));
+
+
+        }
+
+
+    }
 
 
 }
