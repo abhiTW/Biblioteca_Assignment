@@ -18,7 +18,7 @@ public class ExampleTest {
     private static final String GOLD_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/out/textfiles";
     private static final int NO_OF_FILES = 5;
 
-    private static int checkOutArray[] = new int[NO_OF_FILES];
+    private  int checkOutArray[] = new int[NO_OF_FILES];
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private BibliotecaApp testInstance = new BibliotecaApp();
@@ -88,7 +88,7 @@ public class ExampleTest {
     public void checkMainMenuInvalidOption() throws IOException {
 
         testInstance.choosingMainMenuOption(10);
-        verifyOutput(outContent.toString(), "invalid");
+        verifyOutputAfterCheckOutOrReturn(outContent.toString(), "invalid");
 
 
     }
@@ -99,32 +99,43 @@ public class ExampleTest {
 
 
         testInstance.choosingMainMenuOption(2);
-        verifyOutput(outContent.toString(), "exit");
+        verifyOutputAfterCheckOutOrReturn(outContent.toString(), "exit");
 
     }
 
-   /*@Test
+   @Test
     public void checkCheckOutOfBooksIfCheckedOutBookIsUnavailable() throws IOException {
 
 
         int book_no = 2;
-        testInstance.checkOutOfBooks(book_no);
         checkOutArray[book_no - 1] = 1;
+        testInstance.checkOutOfBooks(book_no);
         verifyOutputAfterCheckOutOrReturn(outContent.toString(), "booklist"); // Running to display only the list of books names and not details  ...
 
 
-    }*/
+    }
 
     @Test
     public void checkUnsuccessfulCheckOut() throws IOException
 
     {
         testInstance.checkOutOfBooks(10);
-        verifyOutput(outContent.toString(), "failure_checkout");
+        verifyOutputAfterCheckOutOrReturn(outContent.toString(), "failure_checkout");
 
     }
 
-   /* @Test
+    @Test
+    public void checkUnsuccessfulReturn() throws IOException {        // The other else part is not checked as it is unable to flush the console after it
+
+        int book_no = 10;
+        testInstance.returnOfBooks(book_no);
+        verifyOutputAfterCheckOutOrReturn(outContent.toString(),"failure_return");
+
+
+    }
+
+
+   /*@Test
     public void checkReturnOfBooksIfReturnedBookIsAvailable() throws IOException {
 
 
