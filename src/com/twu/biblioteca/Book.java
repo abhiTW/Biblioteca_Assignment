@@ -12,11 +12,11 @@ public class Book {
     private  boolean checkedOut= false;
 
 
-    Book(String name,String author_Name,String yearOfPublication)
+    Book(String name,String authorName,String yearOfPublication)
 
     {
             this.name = name;
-            this.author_Name = author_Name;
+            this.author_Name = authorName;
             this.yearOfPublication = yearOfPublication;
 
     }
