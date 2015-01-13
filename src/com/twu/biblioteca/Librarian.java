@@ -1,41 +1,59 @@
 package com.twu.biblioteca;
 
 import java.io.BufferedReader;
-import java.io.Console;
+
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
-public class BibliotecaApp {
+public class Librarian {
 
 
     private static final String GOLD_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/out/textfiles";
     private static final int NO_OF_FILES = 5;  // Now fixed later we can set it by counting the number of books from the entries in the file
 
-    private static int checkOutArray[] = new int[NO_OF_FILES];
-    Console cnsl = System.console();
+    private int[] checkOutArray = new int[NO_OF_FILES];
+    Book book1 = new Book("After Many a Summer Dies the Swan", "Aldous Huxley", "1765");
+    Book book2 = new Book("All Passion Spent", "Vita Sackville-West", "1876");
+    Book book3 = new Book("All the King's Men", "Robert Penn Warren", "1877");
+    Book book4 = new Book("An Acceptable Time", "Madeleine L'Engle", "1865");
+    Book book5 = new Book("Tale of Two Cities", "Charles Dickens", "1921");
+
+    private List<Book> bookList = new ArrayList<Book>(Arrays.asList(book1,book2,book3,book4,book5));
+
 
 
     public static void main(String[] args) {
 
 
-        BibliotecaApp customerRequest = new BibliotecaApp();
+
+        Librarian librarian = new Librarian();
+
+        librarian.displayWelcomeMessageInTheConsole();
+        System.out.println();
+
+       librarian.displayListOfLibraryBooksWithDetails();
+
+
 
         Scanner input = new Scanner(System.in);
         String flag = "yes";
-        while(flag.equalsIgnoreCase("y") || flag.equalsIgnoreCase("yes")) {
+        while (flag.equalsIgnoreCase("y") || flag.equalsIgnoreCase("yes")) {
 
-            customerRequest.displayMenuOption();
+            librarian.displayMenuOption();
 
             System.out.println("Enter Y or N to continue or quit respectively: ");
             flag = input.next();
 
         }
         System.out.println();
-        customerRequest.displayListOfLibraryBooksWithDetails();
+        librarian.displayListOfLibraryBooksWithDetails();
 
-        /*customerRequest.displayMenuOption();
-        customerRequest.displayListOfLibraryBooks();*/
+        librarian.displayMenuOption();
+        librarian.displayListOfLibraryBooks();
 
     }
 
@@ -89,16 +107,14 @@ public class BibliotecaApp {
 
             while ((sCurrentLine = br.readLine()) != null) {
 
+                if (bookList.get(ctr++).isCheckedOut())
 
-                if (checkOutArray[ctr++] == 1)
                     continue;
 
                 String[] bookName = sCurrentLine.split(",");
 
                 System.out.printf("%-20d%-40s%-40s%s\n", ctr, bookName[0], bookName[1], bookName[2]);
 
-
-                System.out.println();
 
             }
 
@@ -113,7 +129,7 @@ public class BibliotecaApp {
     public void choosingMainMenuOption(int option) {
 
         if (option == 1)
-            displayListOfLibraryBooks();
+            displayListOfLibraryBooksWithDetails();
         else if (option == 2) {
             System.out.println("System Exiting .....");
             //System.exit(0);
@@ -181,8 +197,8 @@ public class BibliotecaApp {
 
         if ((bookNo - 1) <= NO_OF_FILES) {
 
-            checkOutArray[bookNo - 1] = 1;
-            displayListOfLibraryBooks();
+            bookList.get(bookNo-1).setCheckedOut(true);
+            displayListOfLibraryBooksWithDetails();
 
         } else {
 
@@ -201,13 +217,12 @@ public class BibliotecaApp {
 
         if ((book_no - 1) <= NO_OF_FILES) {
 
-            if (checkOutArray[book_no -1] == 0) {
+            if (bookList.get(book_no -1).isCheckedOut() == false) {
                 System.out.println("That is not a valid book to return");
                 System.out.println();
-            }
-            else {
-                checkOutArray[book_no-1]=0;
-                displayListOfLibraryBooks();
+            } else {
+               bookList.get(book_no -1).setCheckedOut(false);
+                displayListOfLibraryBooksWithDetails();
             }
         } else {
             System.out.println("That is not a valid book to return");
