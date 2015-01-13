@@ -15,33 +15,32 @@ public class Librarian {
     private static final String GOLD_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/out/textfiles";
     private static final int NO_OF_FILES = 5;  // Now fixed later we can set it by counting the number of books from the entries in the file
 
-    Book book1 = new Book("After Many a Summer Dies the Swan", "Aldous Huxley", "1765");
-    Book book2 = new Book("All Passion Spent", "Vita Sackville-West", "1876");
-    Book book3 = new Book("All the King's Men", "Robert Penn Warren", "1877");
-    Book book4 = new Book("An Acceptable Time", "Madeleine L'Engle", "1865");
-    Book book5 = new Book("Tale of Two Cities", "Charles Dickens", "1921");
-
-    private List<Book> bookList = new ArrayList<Book>(Arrays.asList(book1,book2,book3,book4,book5));
 
 
-    public void displayListOfLibraryBooksWithDetails() {
+    private List<Book> bookList;
 
+    public Librarian()
+    {
+
+        bookList = new ArrayList<Book>();
+        updateBookListFromFile();
+
+    }
+
+
+
+    /************ Reading from the file and updating the arrayList ****************/
+
+    private void updateBookListFromFile()
+    {
         try (BufferedReader br = new BufferedReader(new FileReader(GOLD_PATH + '/' + "bookdetailslist"))) {
 
             String sCurrentLine;
-            int ctr = 0;
 
             while ((sCurrentLine = br.readLine()) != null) {
-
-              if (bookList.get(ctr++).isCheckedOut())
-
-                    continue;
-
                 String[] bookName = sCurrentLine.split(",");
-
-                System.out.printf("%-20d%-40s%-40s%s\n", ctr, bookName[0], bookName[1], bookName[2]);
-
-
+                Book book = new Book(bookName[0],bookName[1],bookName[2]);
+                bookList.add(book);
             }
 
         } catch (IOException e) {
@@ -51,7 +50,23 @@ public class Librarian {
 
     }
 
+/***************** End of it *********************************************/
 
+
+public void displayListOfLibraryBooksWithDetails() {
+
+        int ctr = 0;
+
+       for(Book book : bookList)
+       {
+            if (bookList.get(ctr++).isCheckedOut())
+
+                continue;
+           System.out.printf("%-20d%-40s%-40s%s\n", ctr, book.getName(), book.getAuthorName(), book.getYearOfPublication());
+
+        }
+
+}
 
     public void checkOutOfBooks(int bookNo) {
 
@@ -78,7 +93,7 @@ public class Librarian {
 
         if ((book_no - 1) <= NO_OF_FILES) {
 
-            if (bookList.get(book_no -1).isCheckedOut() == false) {
+            if (!bookList.get(book_no - 1).isCheckedOut()) {
                 System.out.println("That is not a valid book to return");
                 System.out.println();
             } else {
@@ -92,4 +107,7 @@ public class Librarian {
 
 
     }
+
+
+
 }

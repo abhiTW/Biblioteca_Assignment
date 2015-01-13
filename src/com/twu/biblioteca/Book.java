@@ -6,8 +6,20 @@ package com.twu.biblioteca;
 public class Book {
 
 
+    public String getName() {
+        return name;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public String getYearOfPublication() {
+        return yearOfPublication;
+    }
+
     private String name;
-    private String author_Name;
+    private String authorName;
     private String    yearOfPublication;
     private  boolean checkedOut= false;
 
@@ -16,7 +28,7 @@ public class Book {
 
     {
             this.name = name;
-            this.author_Name = authorName;
+            this.authorName = authorName;
             this.yearOfPublication = yearOfPublication;
 
     }
