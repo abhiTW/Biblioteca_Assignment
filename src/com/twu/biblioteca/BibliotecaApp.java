@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
 /**
@@ -7,11 +8,7 @@ import java.util.Scanner;
  */
 public class BibliotecaApp {
 
-
-    private Librarian librarian = new Librarian();
-
-
-
+    private Library library = new Library();
 
     public static void main(String[] args) {
 
@@ -23,14 +20,14 @@ public class BibliotecaApp {
         String flag = "yes";
         while (flag.equalsIgnoreCase("y") || flag.equalsIgnoreCase("yes")) {
 
-            customerRequest.displayMenuOption();
+            customerRequest.displayMenuOption(System.in);
 
             System.out.println("Enter Y or N to continue or quit respectively: ");
             flag = input.next();
 
         }
         System.out.println();
-        customerRequest.displayMenuOption();
+        customerRequest.displayMenuOption(System.in);
 
     }
 
@@ -40,42 +37,74 @@ public class BibliotecaApp {
 
     }
 
-    public void choosingMainMenuOption(int option) {
+    public boolean choosingMainMenuOption(int option) {
 
-        if (option == 1)
-            librarian.displayListOfLibraryBooksWithDetails();
+        if (option == 1) {
+            library.displayListOfLibraryBooksWithDetails();
+
+        }
         else if (option == 2) {
             System.out.println("System Exiting .....");
-            //System.exit(0);
+
         } else if (option == 3) {
 
-            displayListOfLibraryBooksForCheckingOut();
+            displayListOfLibraryBooksForCheckingOut(System.in);
         } else if (option == 4) {
 
-            displayForReturningTheLibraryBook();
+            displayForReturningTheLibraryBook(System.in);
         } else {
-            System.out.println("Select a valid option!");
+            return false;
+        }
+
+        return true;
+    }
+
+    public void displayListOfLibraryBooksForCheckingOut(InputStream inContent) {
+
+
+        boolean checkedOut;
+        library.displayListOfLibraryBooksWithDetails();
+
+        Scanner input = new Scanner(inContent);
+        System.out.println("Enter the corresponding book number to check out:");
+
+
+        checkedOut = library.checkOutOfBooks(input.nextInt());
+        if(!checkedOut)
+        {
+            System.out.println("Sorry ! That book is not available");
             System.out.println();
+        }
+        else
+        {
+            System.out.println("Thank you! Enjoy the book");
+        }
+
+    }
+
+    public void displayForReturningTheLibraryBook(InputStream inContent) {
+
+        boolean returned;
+
+        Scanner input = new Scanner(inContent);
+        System.out.println("Enter the number of the book to be returned:");
+
+        returned = library.returnOfBooks(input.nextInt());
+        if(!returned) {
+
+            System.out.println("That is not a valid book to return");
+            System.out.println();
+        }
+        else
+        {
+            System.out.println("Thank you for returning the book");
         }
     }
 
-    private void displayListOfLibraryBooksForCheckingOut() {
 
-        librarian.displayListOfLibraryBooksWithDetails();
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter the corresponding book number to check out:");
-        librarian.checkOutOfBooks(input.nextInt());
-    }
+    public void displayMenuOption(InputStream inContent) {
 
-    private void displayForReturningTheLibraryBook() { 
-
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter the number of the book to be returned:");
-        librarian.returnOfBooks(input.nextInt());
-    }
-
-
-    public void displayMenuOption() {
+        boolean validOption;
 
         System.out.printf("%-50s\n", "MAIN MENU");
         System.out.println("**********************************************");
@@ -88,10 +117,13 @@ public class BibliotecaApp {
 
         System.out.println();
         System.out.printf("%-30s\n", "Please enter your option:");
-        Scanner input = new Scanner(System.in);
-        choosingMainMenuOption(input.nextInt());
 
+        Scanner input = new Scanner(inContent);
+       validOption = choosingMainMenuOption(Integer.parseInt(input.next()));
+
+
+        if(!validOption)
+            System.out.println("Select a valid option!");
     }
-
 
 }
