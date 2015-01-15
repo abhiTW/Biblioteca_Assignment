@@ -19,10 +19,12 @@ public class ReturnOption {
         {
 
             library.returnBook(book);
+            System.out.println("Thank you for returning the book");
             return true;
         }
         else
         {
+            System.out.println("That is not a valid book to return");
             return false;
         }
     }

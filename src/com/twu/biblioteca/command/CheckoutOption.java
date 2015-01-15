@@ -16,12 +16,18 @@ public class CheckoutOption {
 
     public boolean checkout(String bookName) {
         Book book = library.find(bookName);
-        if(book == null) {
+        if (book == null) {
+            System.out.println("Sorry ! That book is not available");
+            System.out.println();
             return false;
         }
-
-        System.out.println("The bookName is " + bookName);
-        library.checkOut(book);
-        return true;
+        else {
+            System.out.println("Thank you! Enjoy the book");
+            System.out.println("The bookName is " + bookName);
+            library.checkOut(book);
+            return true;
+        }
     }
+
+
 }
