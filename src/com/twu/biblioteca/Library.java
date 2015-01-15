@@ -3,14 +3,10 @@ import java.util.List;
 
 public class Library {
 
-    private static final String FILE_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/out/textfiles";
     private List<Book> bookList;
 
-    public Library() {
-
-        InputParser inputParser = new InputParser();
-        bookList = inputParser.updateBookListFromFile(FILE_PATH + '/' + "bookdetailslist");
-
+    public Library(List<Book> bookList) {
+        this.bookList = bookList;
     }
 
     public void displayListOfLibraryBooksWithDetails() {
@@ -24,6 +20,10 @@ public class Library {
             System.out.printf("%-20d%-40s%-40s%s\n", ctr, book.getName(), book.getAuthorName(), book.getYearOfPublication());
 
         }
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
     }
 
     public boolean checkOutOfBooks(int bookNo) {
@@ -54,4 +54,6 @@ public class Library {
             return false;
         }
     }
+
+
 }

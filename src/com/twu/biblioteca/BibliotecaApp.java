@@ -1,6 +1,12 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.command.CheckoutOption;
+import com.twu.biblioteca.command.ListOutOption;
+import com.twu.biblioteca.command.ReturnOption;
+import com.twu.biblioteca.model.Library1;
+
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -8,26 +14,36 @@ import java.util.Scanner;
  */
 public class BibliotecaApp {
 
-    private Library library = new Library();
+    private Library1 library1;
+
+    private static final String FILE_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/src/files";
+
+    public BibliotecaApp(Library1 library1) {
+        this.library1 = library1;
+    }
 
     public static void main(String[] args) {
 
-        BibliotecaApp customerRequest = new BibliotecaApp();
-        customerRequest.displayWelcomeMessageInTheConsole();
-        System.out.println();
-        Scanner input = new Scanner(System.in);
 
+        InputParser inputParser = new InputParser();
+        ArrayList<Book> bookList = inputParser.updateBookListFromFile(FILE_PATH + '/' + "bookdetailslist");
+        ArrayList<Book> availableBookList= inputParser.updateBookListFromFile(FILE_PATH + '/' + "bookdetailslist");
+
+        Library1 library1 = new Library1(availableBookList,bookList);
+        BibliotecaApp bibliotecaApp = new BibliotecaApp(library1);
+
+        bibliotecaApp.displayWelcomeMessageInTheConsole();
+        System.out.println();
+
+        Scanner input = new Scanner(System.in);
         String flag = "yes";
         while (flag.equalsIgnoreCase("y") || flag.equalsIgnoreCase("yes")) {
-
-            customerRequest.displayMenuOption(System.in);
-
+            bibliotecaApp.displayMenuOption(System.in);
             System.out.println("Enter Y or N to continue or quit respectively: ");
             flag = input.next();
-
         }
         System.out.println();
-        customerRequest.displayMenuOption(System.in);
+        bibliotecaApp.displayMenuOption(System.in);
 
     }
 
@@ -37,20 +53,19 @@ public class BibliotecaApp {
 
     }
 
-    public boolean choosingMainMenuOption(int option) {
+
+public boolean choosingMainMenuOption(int option) {
 
         if (option == 1) {
-            library.displayListOfLibraryBooksWithDetails();
+          displayListOfAvailableBooks();
 
-        }
-        else if (option == 2) {
-            System.out.println("System Exiting .....");
+        } else if (option == 2) {
+            System.exit(0);
 
         } else if (option == 3) {
-
             displayListOfLibraryBooksForCheckingOut(System.in);
-        } else if (option == 4) {
 
+        } else if (option == 4) {
             displayForReturningTheLibraryBook(System.in);
         } else {
             return false;
@@ -59,50 +74,53 @@ public class BibliotecaApp {
         return true;
     }
 
+    public void displayListOfAvailableBooks()
+    {
+            new ListOutOption(library1).displayListOfLibraryBooksWithDetails();
+
+
+    }
+
+
     public void displayListOfLibraryBooksForCheckingOut(InputStream inContent) {
-
-
         boolean checkedOut;
-        library.displayListOfLibraryBooksWithDetails();
-
         Scanner input = new Scanner(inContent);
-        System.out.println("Enter the corresponding book number to check out:");
+        new ListOutOption(library1).displayListOfLibraryBooksWithDetails();
 
+        System.out.println("Enter the corresponding book name to check out:");
 
-        checkedOut = library.checkOutOfBooks(input.nextInt());
-        if(!checkedOut)
-        {
+        String bookName = input.nextLine();
+
+        checkedOut = new CheckoutOption(library1).checkout(bookName);
+
+        if (!checkedOut) {
             System.out.println("Sorry ! That book is not available");
             System.out.println();
-        }
-        else
-        {
+        } else {
             System.out.println("Thank you! Enjoy the book");
         }
 
     }
 
-    public void displayForReturningTheLibraryBook(InputStream inContent) {
+    private void displayForReturningTheLibraryBook(InputStream inContent) {
 
         boolean returned;
 
         Scanner input = new Scanner(inContent);
-        System.out.println("Enter the number of the book to be returned:");
+        System.out.println("Enter the name of the book to be returned:");
 
-        returned = library.returnOfBooks(input.nextInt());
-        if(!returned) {
+        returned = new ReturnOption(library1).returnABook(input.nextLine());
+        if (!returned) {
 
             System.out.println("That is not a valid book to return");
             System.out.println();
-        }
-        else
-        {
+        } else {
             System.out.println("Thank you for returning the book");
         }
     }
 
 
-    public void displayMenuOption(InputStream inContent) {
+    public  void displayMenuOption(InputStream inContent) {
 
         boolean validOption;
 
@@ -119,10 +137,10 @@ public class BibliotecaApp {
         System.out.printf("%-30s\n", "Please enter your option:");
 
         Scanner input = new Scanner(inContent);
-       validOption = choosingMainMenuOption(Integer.parseInt(input.next()));
+        validOption = choosingMainMenuOption(Integer.parseInt(input.next()));
 
 
-        if(!validOption)
+        if (!validOption)
             System.out.println("Select a valid option!");
     }
 

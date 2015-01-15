@@ -27,7 +27,7 @@ public class LibraryTest {
     Book book5 = new Book("Tale of Two Cities", "Charles Dickens", "1921");
     List<Book> bookList = new ArrayList<Book>(Arrays.asList(book1, book2, book3, book4, book5));
 
-    private Library library = new Library();
+    private Library library1 = new Library(bookList);
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -48,16 +48,16 @@ public class LibraryTest {
     public void checkCheckOutOfBooksIfCheckedOutBookIsUnavailable() throws IOException {
         int book_no = 2;
         bookList.get(book_no - 1).setCheckedOut(true);
-        library.checkOutOfBooks(book_no);
+        library1.checkOutOfBooks(book_no);
         verifyOutputAfterFormatting(outContent.toString(), "bookdetailslist");
 
     }
     @Test
     public void checkReturnOfBooksIfReturnedBookIsAvailable() throws IOException {
         int book_no = 3;
-        library.checkOutOfBooks(book_no);
+        library1.checkOutOfBooks(book_no);
         outContent.reset();
-        library.returnOfBooks(book_no);
+        library1.returnOfBooks(book_no);
         bookList.get(book_no - 1).setCheckedOut(false);
         verifyOutputAfterFormatting(outContent.toString(), "bookdetailslist");
     }

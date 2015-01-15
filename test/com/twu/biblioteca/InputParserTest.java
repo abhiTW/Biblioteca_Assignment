@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class InputParserTest {
 
-    private static final String FILE_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/out/textfiles";
+    private static final String FILE_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/src/files/";
     Book book1 = new Book("After Many a Summer Dies the Swan","Aldous Huxley","1765");
     Book book2 = new Book("All Passion Spent","Vita Sackville-West","1876");
     Book book3 = new Book("All the King's Men","Robert Penn Warren","1877");
