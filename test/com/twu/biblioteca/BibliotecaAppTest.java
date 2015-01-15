@@ -61,10 +61,10 @@ public class BibliotecaAppTest {
         verifyOutputAfterFormatting(outContent.toString(), "bookdetailslist");
     }
 
-    @Test
-    public void checkMainMenuInvalidOption() {
-        assertFalse(testInstance.choosingMainMenuOption(10));
-    }
+//    @Test
+//    public void checkMainMenuInvalidOption() {
+//        assertFalse(testInstance.choosingMainMenuOption(10));
+//    }
 
     @Test
     public void checkMainMenuInvalidMessage() throws IOException {
@@ -81,14 +81,14 @@ public class BibliotecaAppTest {
         assertTrue(outContent.toString().contains("System Exiting ....."));
     }
 */
-    @Test
-    public void checkUnsuccessfulCheckOut() throws IOException
-    {
-        String bookNum = "10";
-        ByteArrayInputStream inContent = new ByteArrayInputStream(bookNum.getBytes());
-        testInstance.displayListOfLibraryBooksForCheckingOut(inContent);
-        assertTrue(outContent.toString().contains("Sorry ! That book is not available"));
-    }
+//    @Test
+//    public void checkUnsuccessfulCheckOut() throws IOException
+//    {
+//        String bookNum = "10";
+//        ByteArrayInputStream inContent = new ByteArrayInputStream(bookNum.getBytes());
+//        testInstance.displayListOfLibraryBooksForCheckingOut(inContent);
+//        assertTrue(outContent.toString().contains("Sorry ! That book is not available"));
+//    }
 
     /*@Test
     public void checkSuccessfulCheckOut() throws IOException

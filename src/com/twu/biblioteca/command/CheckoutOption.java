@@ -3,14 +3,10 @@ package com.twu.biblioteca.command;
 import com.twu.biblioteca.Book;
 import com.twu.biblioteca.model.Library1;
 
-/**
- * Created by abhinaym on 14/01/15.
- */
 public class CheckoutOption {
     private Library1 library;
 
     public CheckoutOption(Library1 library) {
-
         this.library = library;
     }
 

@@ -29,8 +29,6 @@ public class BibliotecaApp {
 
 
     public static void main(String[] args) {
-
-
         InputParser inputParser = new InputParser();
         ArrayList<Book> bookList = inputParser.updateBookListFromFile(FILE_PATH + '/' + "bookdetailslist");
         ArrayList<Book> availableBookList = inputParser.updateBookListFromFile(FILE_PATH + '/' + "bookdetailslist");
@@ -52,49 +50,39 @@ public class BibliotecaApp {
         }
         System.out.println();
         bibliotecaApp.displayMenuOption(System.in);
-
     }
 
     public void displayWelcomeMessageInTheConsole() {
-
         System.out.print("Welcome to Bibilioteca!!!");
-
     }
 
 
-    public boolean choosingMainMenuOption(int option) {
+    public void choosingMainMenuOption(int option) {
 
-
-        if (option == 1) {
-            displayListOfAvailableBooks();
-
-        } else if (option == 2) {
-            System.exit(0);
-
-        } else if (option == 3) {
-
-            if (loginValidator.isLoggedIn()) {
-                displayListOfLibraryBooksForCheckingOut(System.in);
-            }
-            else {
-                displayForEnteringLoginInfo();
-                if (loginValidator.isLoggedIn()) {
-                 displayListOfLibraryBooksForCheckingOut(System.in);
-
-                }
-                else
-                {
-                    System.out.println("Sry ! You have used your max attempts to retry password!");
+        switch (option) {
+            case 1:
+                new ListOutOption(library1).displayListOfLibraryBooksWithDetails();
+                break;
+            case 2:
+                System.exit(0);
+                break;
+            case 3:
+                while (!loginValidator.isLoggedIn()) {
+                    displayForEnteringLoginInfo();
                 }
 
+                System.out.println("Enter the corresponding book name to check out:");
+                String bookName = new Scanner(System.in).nextLine();
+                new CheckoutOption(library1).checkout(bookName);
 
-            }
-        } else if (option == 4) {
-            displayForReturningTheLibraryBook(System.in);
-        } else {
-            return false;
+            case 4:
+                Scanner input = new Scanner(System.in);
+                System.out.println("Enter the name of the book to be returned:");
+                new ReturnOption(library1).returnABook(input.nextLine());
+
+            default:
+                System.out.println("Select a valid option!");
         }
-        return true;
     }
 
 
@@ -109,34 +97,9 @@ public class BibliotecaApp {
         password = inputPassword.next();
 
         loginValidator.validateCustomerLogin(customerList, libraryNo, password);
-
-
     }
-
-    public void displayListOfAvailableBooks() {
-        new ListOutOption(library1).displayListOfLibraryBooksWithDetails();
-    }
-
-    public void displayListOfLibraryBooksForCheckingOut(InputStream inContent) {
-
-        Scanner input = new Scanner(inContent);
-        new ListOutOption(library1).displayListOfLibraryBooksWithDetails();
-
-        System.out.println("Enter the corresponding book name to check out:");
-        String bookName = input.nextLine();
-        new CheckoutOption(library1).checkout(bookName);
-    }
-
-    private void displayForReturningTheLibraryBook(InputStream inContent) {
-
-        Scanner input = new Scanner(inContent);
-        System.out.println("Enter the name of the book to be returned:");
-        new ReturnOption(library1).returnABook(input.nextLine());
-    }
-
 
     public void displayMenuOption(InputStream inContent) {
-        boolean validOption;
         System.out.printf("%-50s\n", "MAIN MENU");
         System.out.println("**********************************************");
 
@@ -149,10 +112,8 @@ public class BibliotecaApp {
         System.out.printf("%-30s\n", "Please enter your option:");
 
         Scanner input = new Scanner(inContent);
-        validOption = choosingMainMenuOption(Integer.parseInt(input.next()));
+        choosingMainMenuOption(Integer.parseInt(input.next()));
 
-        if (!validOption)
-            System.out.println("Select a valid option!");
     }
 
 }
