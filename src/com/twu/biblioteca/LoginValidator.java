@@ -7,29 +7,21 @@ import java.util.ArrayList;
  */
 public class LoginValidator {
 
-    private boolean loggedIn;
-    public boolean isLoggedIn() {
-        return loggedIn;
+    private ArrayList<Customer> customerList;
+
+    public LoginValidator(ArrayList<Customer> customerList) {
+        this.customerList = customerList;
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
-
-    public boolean validateCustomerLogin(ArrayList<Customer> customerList, String libraryNum, String password) {
+    public Customer validate(String libraryNum, String password) {
 
             for(Customer customer: customerList)
             {
-                System.out.println("The userName is" + customer.getLibNo() + customer.getPassword());
-                System.out.println("The userName passed is" + libraryNum + password);
-
-                if(customer.getLibNo().equals(libraryNum) && customer.getPassword().equals(password)) {
-
-                    setLoggedIn(true);
-                    return true;
+                if(customer.getNUMBER().equals(libraryNum) && customer.getPassword().equals(password)) {
+                    return customer;
                 }
             }
 
-        return false;
+        return null;
     }
 }

@@ -45,7 +45,7 @@ public class Library1Test {
         String bookName1 = "Ask Me";
         Book book1 = new Book(bookName1, "abh", "abhdsch");
         String bookName2 = "All Passion Spent";
-       // Book book2 = new Book(bookName1, "abh", "abhdsch");
+
 
         ArrayList<Book> books1 = new ArrayList<>();
         books1.add(book1);
@@ -53,7 +53,7 @@ public class Library1Test {
 
         Book newBook = library.find(bookName2);
         assertNull(newBook);
-        //assertEquals(newBook,null);
+
     }
 
     @Test

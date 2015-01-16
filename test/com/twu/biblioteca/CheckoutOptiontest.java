@@ -19,12 +19,13 @@ public class CheckoutOptionTest {
 
         ArrayList<Book> books = new ArrayList<>();
         Book book = new Book("book name", "", "");
+        Customer customer1 = new Customer("Abhinaya", "abhinayacric@gmail.com", "1234567890", "abc-defg", "abhinayaTW");
         books.add(book);
         Library1 library = new Library1(books,books);
 
         CheckoutOption checkoutOption = new CheckoutOption(library);
 
-        boolean checkoutStatus = checkoutOption.checkout("book name");
+        boolean checkoutStatus = checkoutOption.checkout("book name", customer1);
 
         assertThat(checkoutStatus, is(true));
         assertThat(books.size(), is(0));
@@ -35,11 +36,12 @@ public class CheckoutOptionTest {
 
         ArrayList<Book> books = new ArrayList<>();
         Book book = new Book("book name", "", "");
+        Customer customer1 = new Customer("Abhinaya", "abhinayacric@gmail.com", "1234567890", "abc-defg", "abhinayaTW");
+
         books.add(book);
         Library1 library = new Library1(books,books);
-
         CheckoutOption checkoutOption = new CheckoutOption(library);
 
-        assertThat(checkoutOption.checkout("blah"), is(false));
+        assertThat(checkoutOption.checkout("blah", customer1), is(false));
     }
 }

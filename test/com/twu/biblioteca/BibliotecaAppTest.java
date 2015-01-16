@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 
 
@@ -66,14 +65,15 @@ public class BibliotecaAppTest {
 //        assertFalse(testInstance.choosingMainMenuOption(10));
 //    }
 
-    @Test
+    /*@Test
     public void checkMainMenuInvalidMessage() throws IOException {
         String menuOption = "10";
         ByteArrayInputStream inContent = new ByteArrayInputStream(menuOption.getBytes());
-        testInstance.displayMenuOption(inContent);
+
+        testInstance.choosingMainMenuOption();
         assertTrue(outContent.toString().contains("Select a valid option!"));
     }
-
+*/
 /*
     @Test
     public void checkMainMenuQuitOption() throws IOException {

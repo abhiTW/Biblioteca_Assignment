@@ -17,7 +17,7 @@ public class Customer {
         return phoneNo;
     }
 
-    public String getLibNo() {
+    public String getNUMBER() {
         return libNo;
     }
 

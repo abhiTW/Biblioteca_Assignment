@@ -4,29 +4,26 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
 
 /**
  * Created by abhinaym on 15/01/15.
  */
 public class LoginValidatorTest {
 
-
     @Test
     public void shouldReturnTrueWhenValidUserNameAndPasswordIsPassedForLoginAuthentication() {
         Customer customer1 = new Customer("Abhinaya", "abhinayacric@gmail.com", "1234567890", "abc-defg", "abhinayaTW");
-        Customer customer2 = new Customer("Anu", "anucric@gmail.com", "1236567890", "dfg-hjkl", "anusuyaTW");
         ArrayList<Customer> customerList = new ArrayList<Customer>();
         customerList.add(customer1);
-        customerList.add(customer2);
-
         String libraryNum = "abc-defg";
         String password = "abhinayaTW";
-        LoginValidator loginValidator = new LoginValidator();
 
+        LoginValidator loginValidator = new LoginValidator(customerList);
+        Customer customer = loginValidator.validate(libraryNum,password);
 
-        assertTrue(loginValidator.validateCustomerLogin(customerList, libraryNum, password));
+        assertThat("@LoginValidatorTest",customer.getName(),is("Abhinaya"));
     }
 
     @Test
@@ -37,10 +34,10 @@ public class LoginValidatorTest {
 
         String libraryNum = "xyz";
         String password = "somethingTW";
-        LoginValidator loginValidator = new LoginValidator();
+        LoginValidator loginValidator = new LoginValidator(customerList);
+        Customer customer = loginValidator.validate(libraryNum,password);
 
-
-        assertFalse(loginValidator.validateCustomerLogin(customerList, libraryNum, password));
+        assertNull(customer);
     }
 
 
