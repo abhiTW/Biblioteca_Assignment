@@ -1,87 +1,76 @@
 package com.twu.biblioteca;
 
-import org.junit.After;
-import org.junit.Before;
+import com.twu.biblioteca.model.Library;
 import org.junit.Test;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-
-/**
- * Created by abhinaym on 14/01/15.
- */
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
 
 public class LibraryTest {
 
-    private static final String FILE_PATH = "/Users/abhinaym/Downloads/TWU_Biblioteca-master/out/textfiles";
+    @Test
+    public void shouldCheckOutABook() {
+        //setup
+        Book book = new Book("", "", "");
+        ArrayList<Item> books1 = new ArrayList<>();
+        books1.add(book);
+        Library library = new Library(books1,books1);
 
-    Book book1 = new Book("After Many a Summer Dies the Swan", "Aldous Huxley", "1765");
-    Book book2 = new Book("All Passion Spent", "Vita Sackville-West", "1876");
-    Book book3 = new Book("All the King's Men", "Robert Penn Warren", "1877");
-    Book book4 = new Book("An Acceptable Time", "Madeleine L'Engle", "1865");
-    Book book5 = new Book("Tale of Two Cities", "Charles Dickens", "1921");
-    List<Book> bookList = new ArrayList<Book>(Arrays.asList(book1, book2, book3, book4, book5));
+        //action
+        library.checkOut(book);
 
-    private Library library1 = new Library(bookList);
-
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-
-    @Before
-    public void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
-    }
-
-    @After
-    public void cleanUpStreams() {
-        System.setOut(null);
-        System.setErr(null);
+        //assert
+        assertThat(library.getAvailableItemList().size(), is(0));
     }
 
     @Test
-    public void checkCheckOutOfBooksIfCheckedOutBookIsUnavailable() throws IOException {
-        int book_no = 2;
-        bookList.get(book_no - 1).setCheckedOut(true);
-        library1.checkOutOfBooks(book_no);
-        verifyOutputAfterFormatting(outContent.toString(), "bookdetailslist");
+    public void shouldCheckFindByName()  {
 
+        String bookName = "All Passion Spent";
+        Book book = new Book(bookName, "abh", "abhdsch");
+
+        ArrayList<Item> books1 = new ArrayList<>();
+        books1.add(book);
+        Library library = new Library(books1,books1);
+
+        Book newBook = (Book)library.find(bookName);
+        assertThat("@Find", newBook,is(book));
     }
+
     @Test
-    public void checkReturnOfBooksIfReturnedBookIsAvailable() throws IOException {
-        int book_no = 3;
-        library1.checkOutOfBooks(book_no);
-        outContent.reset();
-        library1.returnOfBooks(book_no);
-        bookList.get(book_no - 1).setCheckedOut(false);
-        verifyOutputAfterFormatting(outContent.toString(), "bookdetailslist");
-    }
+    public void shouldReturnNullIfBookIsUnavailable()  {
 
-    private void verifyOutputAfterFormatting(String actualValue, String fileName) throws IOException {
-        BufferedReader actualStream = new BufferedReader(new StringReader(actualValue));
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH + '/' + fileName))) {
-            String sCurrentLine;
-            int ctr = 0;
-            while ((sCurrentLine = br.readLine()) != null) {
+        String bookName1 = "Ask Me";
+        Book book1 = new Book(bookName1, "abh", "abhdsch");
+        String bookName2 = "All Passion Spent";
 
-                if (bookList.get(ctr).isCheckedOut())
-                    continue;
 
-                String[] bookName = sCurrentLine.split(",");
-                ctr++;
-                String fileInConsoleFormat = String.format("%-20d%-40s%-40s%s", ctr, bookName[0], bookName[1], bookName[2]);
-                assertThat("in file: " + fileName, actualStream.readLine(), equalTo(fileInConsoleFormat));
-            }
+        ArrayList<Item> books1 = new ArrayList<>();
+        books1.add(book1);
+        Library library = new Library(books1,books1);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Book newBook = (Book)library.find(bookName2);
+        assertNull(newBook);
 
     }
+
+    @Test
+    public void shouldUpdateBookListWithReturnedBook() {
+        String bookName = "All Passion Spent";
+        Book book = new Book(bookName, "abh", "abhdsch");
+
+        ArrayList<Item> books1 = new ArrayList<>();
+        Library library = new Library(books1,books1);
+
+        assertThat(library.returnItem(book), is(true));
+
+        assertThat(books1.size(), is(1));
+    }
+
+
+
+
+
 }

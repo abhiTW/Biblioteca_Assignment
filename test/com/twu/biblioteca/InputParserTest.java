@@ -23,7 +23,7 @@ public class InputParserTest {
     public void CheckUpdateBookListFromFile() {
         ArrayList<Book> bookListExpected = new ArrayList<Book>(Arrays.asList(book1, book2, book3, book4, book5));
         InputParser inputParser = new InputParser();
-        ArrayList<Book> bookListActual = inputParser.updateBookListFromFile(FILE_PATH + '/' + "bookdetailslist");
+        ArrayList<Item> bookListActual = inputParser.createBookListFromFile(FILE_PATH + '/' + "bookdetailslist");
         int ctr = 0;
 
         for(Book book : bookListExpected)

@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.command.ListOutOption;
-import com.twu.biblioteca.model.Library1;
+import com.twu.biblioteca.model.Library;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,9 +9,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,10 +35,10 @@ public class ListOutOptionTest {
     @Test
     public void checkListOfAvailableBooks()
     {
-        ArrayList<Book> books = new ArrayList<>();
+        ArrayList<Item> books = new ArrayList<>();
         Book book1 = new Book("book name", "author name", "1899");
         books.add(book1);
-        Library1 library = new Library1(books,books);
+        Library library = new Library(books,books);
         ListOutOption  listOutOption= new ListOutOption(library);
         String ExpectedListOfBooks = String.format("%-20d%-40s%-40s%s",1,book1.getName(),book1.getAuthorName(),book1.getYearOfPublication());
 

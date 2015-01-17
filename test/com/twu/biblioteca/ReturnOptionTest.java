@@ -1,8 +1,7 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.command.CheckoutOption;
 import com.twu.biblioteca.command.ReturnOption;
-import com.twu.biblioteca.model.Library1;
+import com.twu.biblioteca.model.Library;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -20,15 +19,13 @@ public class ReturnOptionTest {
     @Test
     public void shouldReturnABook() {
 
-        ArrayList<Book> availableBooks = new ArrayList<>();
+        ArrayList<Item> availableBooks = new ArrayList<>();
         Book book = new Book("book name", "", "");
-
-
-        ArrayList<Book> totalBooks = new ArrayList<>();
+        ArrayList<Item> totalBooks = new ArrayList<>();
         totalBooks.add(book);
 
-        Library1 library1 = new Library1(availableBooks,totalBooks);
-        ReturnOption returnOption = new ReturnOption(library1);
+        Library library = new Library(availableBooks,totalBooks);
+        ReturnOption returnOption = new ReturnOption(library);
 
         boolean returnStatus = returnOption.returnABook("book name");
 
@@ -41,12 +38,12 @@ public class ReturnOptionTest {
     {
         Book sampleBook1 = new Book("mybook", "", "");
         Book sampleBook2 = new Book("somebook", "", "");
-        ArrayList<Book> availableBooks = new ArrayList<>();
-        ArrayList<Book> totalBooks = new ArrayList<>();
+        ArrayList<Item> availableBooks = new ArrayList<>();
+        ArrayList<Item> totalBooks = new ArrayList<>();
 
         totalBooks.add(sampleBook2);
-        Library1  library1 = new Library1(availableBooks,totalBooks);
-        ReturnOption returnOption = new ReturnOption(library1);
+        Library library = new Library(availableBooks,totalBooks);
+        ReturnOption returnOption = new ReturnOption(library);
 
         boolean returnStatus = returnOption.returnABook("mybook");
 

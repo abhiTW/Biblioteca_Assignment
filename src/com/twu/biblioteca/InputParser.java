@@ -10,9 +10,9 @@ import java.util.ArrayList;
  */
 public class InputParser {
 
-    public ArrayList<Book> updateBookListFromFile(String fileName)
+    public ArrayList<Item> createBookListFromFile(String fileName)
     {
-        ArrayList<Book> bookList = new ArrayList<Book>();
+        ArrayList<Item> bookList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
             String sCurrentLine;
@@ -32,5 +32,25 @@ public class InputParser {
     }
 
 
+    public ArrayList<Item> createMovieListFromFile(String fileName)
+    {
+        ArrayList<Item> bookList = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+
+            String sCurrentLine;
+
+
+            while ((sCurrentLine = br.readLine()) != null) {
+                String[] movieName = sCurrentLine.split(",");
+                Movie movie = new Movie(movieName[0],movieName[1],movieName[2],movieName[3]);
+                bookList.add(movie);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bookList;
+    }
 
 }
