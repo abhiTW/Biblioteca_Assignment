@@ -1,5 +1,5 @@
 <root>
-  <item name='java.lang.String byte[] getBytes()'>
-    <annotation name='java.lang.annotation.Deprecated'/>
-  </item>
+    <item name='java.lang.String byte[] getBytes()'>
+      <annotation name='java.lang.annotation.Deprecated'/>
+    </item>
 </root>

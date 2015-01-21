@@ -1,12 +1,10 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.command.CheckoutOption;
-import com.twu.biblioteca.command.ListOutOption;
-import com.twu.biblioteca.command.LogInOption;
-import com.twu.biblioteca.command.ReturnOption;
+import com.twu.biblioteca.command.*;
 
 import com.twu.biblioteca.model.Library;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -32,112 +30,37 @@ public class BibliotecaApp {
     ArrayList<Customer> customerList = new ArrayList<Customer>(Arrays.asList(customer1, customer2));
     private LoginValidator loginValidator = new LoginValidator(customerList);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+
         InputParser inputParser = new InputParser();
         ArrayList<Item> bookList = inputParser.createBookListFromFile(FILE_PATH + '/' + "bookdetailslist");
-        ArrayList<Item> availableBookList = inputParser.createBookListFromFile(FILE_PATH + '/' + "bookdetailslist");
+        ArrayList<Item> availableBookList = new ArrayList<Item>(bookList);
         Library bookLibrary = new Library(availableBookList, bookList);
 
         ArrayList<Item> movieList = inputParser.createMovieListFromFile(FILE_PATH + '/' + "moviedetailslist");
-        ArrayList<Item> availableMovieList = inputParser.createMovieListFromFile(FILE_PATH + '/' + "moviedetailslist");
+        ArrayList<Item> availableMovieList =  new ArrayList<>(movieList);
         Library movieLibrary = new Library(availableMovieList, movieList);
-        BibliotecaApp bibliotecaApp = new BibliotecaApp(bookLibrary, movieLibrary);
 
+        BibliotecaApp bibliotecaApp = new BibliotecaApp(bookLibrary, movieLibrary);
         bibliotecaApp.displayWelcomeMessageInTheConsole();
         System.out.println();
-
         Scanner input = new Scanner(System.in);
-        String flag = "yes";
-        while (flag.equalsIgnoreCase("y") || flag.equalsIgnoreCase("yes")) {
+        while(true) {
             bibliotecaApp.displayMenuOption();
             bibliotecaApp.choosingMainMenuOption(Integer.parseInt(input.next()));
-            System.out.println("Enter Y or N to continue or quit respectively: ");
-            flag = input.next();
+        }
 
         }
-    }
 
     public void displayWelcomeMessageInTheConsole() {
         System.out.print("Welcome to Bibilioteca!!!");
     }
 
-    public void choosingMainMenuOption(int option) {
+    public void choosingMainMenuOption(int option) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Command command = CommandFactory.createCommand(option,bookLibrary,movieLibrary,loginValidator);
 
-        Scanner input = new Scanner(System.in);
-        String itemName;
-
-        switch (option) {
-            case 1:
-                new ListOutOption(bookLibrary).displayListOfLibraryBooksWithDetails();
-                break;
-            case 2:
-                new ListOutOption(movieLibrary).displayListOfLibraryMoviesWithDetails();
-                break;
-            case 3:
-                System.out.println("The System is Exiting....");
-                System.exit(0);
-                break;
-            case 4:
-                if (loggedInCustomer == null) {
-                    System.out.println("Sorry LOGIN first to check out a book !");
-                } else {
-                    System.out.println("Enter a bookname to checkout:");
-                    itemName = input.nextLine();
-                    new CheckoutOption(bookLibrary).checkout(itemName, loggedInCustomer);
-                }
-                break;
-            case 5:
-                if (loggedInCustomer == null) {
-                    System.out.println("Sorry LOGIN first to return a book !");
-                } else {
-                    System.out.println("Enter the name of the book to return:");
-                    itemName = input.nextLine();
-                    new ReturnOption(bookLibrary).returnABook(itemName);
-                }
-                break;
-            case 6:
-                if (loggedInCustomer == null) {
-                    System.out.println("Sorry LOGIN first to check out a movie !");
-
-                } else {
-                    System.out.println("Enter the name of the movie to check out:");
-                    itemName = input.nextLine();
-                    new CheckoutOption(movieLibrary).checkoutAMovie(itemName, loggedInCustomer);
-                }
-                break;
-            case 7:
-                if (loggedInCustomer == null) {
-                    System.out.println("Sorry LOGIN first to return a movie !");
-                } else {
-                    System.out.println("Enter the name of the movie to return:");
-                    itemName = input.nextLine();
-                    new ReturnOption(movieLibrary).returnAMovie(itemName);
-                }
-                break;
-            case 8:
-                if (loggedInCustomer != null) {
-                    System.out.println("You are already logged into the system");
-                } else {
-                    loggedInCustomer = new LogInOption(loginValidator).getUserInputForAuthentication();
-                }
-                break;
-            case 9:
-                if (loggedInCustomer == null) {
-                    System.out.println("Sorry LOGIN first to know who has checked out a book!");
-                } else {
-                    new ListOutOption(bookLibrary).displayListOfLibraryBooksWithTheCustomerWhoCheckedOut();
-                }
-                break;
-            case 10:
-                if (loggedInCustomer == null) {
-                    System.out.println("Sorry LOGIN first to view your contact information!");
-                } else {
-                    new ListOutOption(bookLibrary).displayContactInformationOfTheLoggedInUser(loggedInCustomer);
-                }
-                break;
-            default:
-                System.out.println("Select a valid option!");
-        }
+        if(command!=null)
+        command.execute();
     }
 
     public void displayMenuOption() {

@@ -2,13 +2,12 @@ package com.twu.biblioteca.command;
 
 import com.twu.biblioteca.Customer;
 import com.twu.biblioteca.LoginValidator;
-
 import java.util.Scanner;
 
 /**
  * Created by abhinaym on 15/01/15.
  */
-public class LogInOption {
+public class LogInOption extends Command {
 
     private LoginValidator loginValidator;
 
@@ -25,13 +24,22 @@ public class LogInOption {
             String userName = input.nextLine();
             System.out.println("Enter your password :");
             String password = input.nextLine();
-
             customer = loginValidator.validate(userName, password);
-
         }
-
         return customer;
     }
 
+    public boolean isCustomerLoggedIn()
+    {
+        if(this.loginValidator.getLoggedInCustomer()!= null)
+            return true;
+        else
+            return false;
+    }
 
+    @Override
+    public void execute() {
+        getUserInputForAuthentication();
+
+    }
 }

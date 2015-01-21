@@ -1,16 +1,20 @@
 package com.twu.biblioteca.command;
 
 import com.twu.biblioteca.Book;
+import com.twu.biblioteca.LoginValidator;
 import com.twu.biblioteca.Movie;
 import com.twu.biblioteca.model.Library;
 
-public class ReturnOption {
+import java.util.Scanner;
+
+public class ReturnOptionBook extends Command{
 
     private Library library;
-
-    public ReturnOption(Library library)
+    private LoginValidator loginValidator;
+    public ReturnOptionBook(Library library, LoginValidator loginValidator)
     {
         this.library = library;
+         this.loginValidator = loginValidator;
     }
 
     public boolean returnABook(String bookName)
@@ -30,21 +34,20 @@ public class ReturnOption {
         }
     }
 
+    @Override
+    public void execute() {
 
-    public boolean returnAMovie(String bookName)
-    {
-        Movie movie = (Movie)library.findForReturn(bookName);
-        if(movie != null)
+        if(loginValidator.getLoggedInCustomer()== null)
         {
-            library.returnItem(movie);
-            library.removeItemFromItemCustomerMap(movie);
-            System.out.println("Thank you for returning the movie");
-            return true;
+            System.out.println("Sorry, you have to log in to return a book");
         }
         else
-        {
-            System.out.println("That is not a valid movie to return");
-            return false;
+        {   Scanner input = new Scanner(System.in);
+            System.out.println("Enter the name of the book to return:");
+            String bookName = input.nextLine();
+
+            returnABook(bookName);
         }
+
     }
 }

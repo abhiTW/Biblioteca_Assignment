@@ -8,7 +8,11 @@ import java.util.ArrayList;
 public class LoginValidator {
 
     private ArrayList<Customer> customerList;
+    private Customer loggedInCustomer;
 
+    public Customer getLoggedInCustomer() {
+        return loggedInCustomer;
+    }
     public LoginValidator(ArrayList<Customer> customerList) {
         this.customerList = customerList;
     }
@@ -18,6 +22,7 @@ public class LoginValidator {
             for(Customer customer: customerList)
             {
                 if(customer.getNUMBER().equals(libraryNum) && customer.getPassword().equals(password)) {
+                    loggedInCustomer = customer;
                     return customer;
                 }
             }

@@ -1,7 +1,5 @@
 
 package com.twu.biblioteca;
-
-
 import com.twu.biblioteca.model.Library;
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +12,6 @@ import java.util.List;
 
 
 import static org.junit.Assert.*;
-
 
 public class BibliotecaAppTest {
 
@@ -55,80 +52,6 @@ public class BibliotecaAppTest {
         testInstance.displayWelcomeMessageInTheConsole();
         assertEquals("Welcome to Bibilioteca!!!", outContent.toString());
     }
-
-    @Test
-    public void checkMainMenuListingOfFilesOption() throws IOException {
-        testInstance.choosingMainMenuOption(1);
-        verifyOutputAfterFormatting(outContent.toString(), "bookdetailslist");
-    }
-
-    @Test
-    public void checkMainMenuInvalidMessage() throws IOException {
-        int inValidMenuOption = 11;
-        testInstance.choosingMainMenuOption(inValidMenuOption);
-        assertTrue(outContent.toString().contains("Select a valid option!"));
-    }
-
-   /*@Test
-    public void checkUnsuccessfulCheckOut() throws IOException
-    {
-        String bookNum = "10";
-        ByteArrayInputStream inContent = new ByteArrayInputStream(bookNum.getBytes());
-       // testInstance.displayListOfLibraryBooksForCheckingOut(inContent);
-        assertTrue(outContent.toString().contains("Sorry ! That book is not available"));
-    }*/
-
-    /*@Test
-    public void checkSuccessfulCheckOut() throws IOException
-    {
-        String bookNum = "2";
-        ByteArrayInputStream inContent = new ByteArrayInputStream(bookNum.getBytes());
-        testInstance.displayListOfLibraryBooksForCheckingOut(inContent);
-        assertTrue(outContent.toString().contains("Thank you! Enjoy the book"));
-    }
-*/
-  /* @Test
-    public void checkUnsuccessfulReturn() throws IOException {
-        String bookNum = "10";
-        ByteArrayInputStream inContent = new ByteArrayInputStream(bookNum.getBytes());
-        testInstance.displayForReturningTheLibraryBook(inContent);
-        assertTrue(outContent.toString().contains("That is not a valid book to return"));
-    }
-
-    @Test
-    public void checkSuccessfulReturn() throws IOException {
-
-        String bookNumForCheckingOut = "2";
-        ByteArrayInputStream inContentForCheckingOut = new ByteArrayInputStream(bookNumForCheckingOut.getBytes());
-        testInstance.displayListOfLibraryBooksForCheckingOut(inContentForCheckingOut);
-
-        String bookNumForReturn = "2";
-        ByteArrayInputStream inContentReturn = new ByteArrayInputStream(bookNumForReturn.getBytes());
-        testInstance.displayForReturningTheLibraryBook(inContentReturn, bookLibrary);
-        assertTrue(outContent.toString().contains("Thank you for returning the book"));
-
-    }
-*/
-    private void verifyOutputAfterFormatting(String actualValue, String fileName) throws IOException {
-
-        BufferedReader actualStream = new BufferedReader(new StringReader(actualValue));
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH + '/' + fileName))) {
-            String sCurrentLine;
-            int ctr = 0;
-            while ((sCurrentLine = br.readLine()) != null) {
-
-                String[] bookName = sCurrentLine.split(",");
-                ctr++;
-                String fileInConsoleFormat = String.format("%-20d%-40s%-40s%s", ctr, bookName[0], bookName[1], bookName[2]);
-                assertEquals(actualStream.readLine(),(fileInConsoleFormat));
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }
 

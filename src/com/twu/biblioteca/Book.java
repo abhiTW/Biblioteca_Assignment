@@ -15,7 +15,7 @@ public class Book extends Item  {
     private String authorName;
     private String yearOfPublication;
 
-    Book(String name,String authorName, String yearOfPublication) {
+    public Book(String name,String authorName, String yearOfPublication) {
             super(name);
             this.authorName = authorName;
             this.yearOfPublication = yearOfPublication;
